@@ -5,6 +5,9 @@ import { useSidebar } from '@/hooks/use-sidebar';
 import { cn } from '@/lib/utils';
 import { ChevronsLeft } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '../ui/button';
+import { useAuthStore } from '@/hooks/use-auth-store';
+import { useRouter } from '@/routes/hooks';
 
 type SidebarProps = {
   className?: string;
@@ -12,6 +15,8 @@ type SidebarProps = {
 
 export default function Sidebar({ className }: SidebarProps) {
   const { isMinimized, toggle } = useSidebar();
+  const router = useRouter();
+  const { logout } = useAuthStore();
   const [status, setStatus] = useState(false);
 
   const handleToggle = () => {
@@ -19,6 +24,12 @@ export default function Sidebar({ className }: SidebarProps) {
     toggle();
     setTimeout(() => setStatus(false), 500);
   };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
   return (
     <nav
       className={cn(
@@ -45,8 +56,9 @@ export default function Sidebar({ className }: SidebarProps) {
       </div>
       <div className="space-y-4 py-4">
         <div className="px-2 py-2">
-          <div className="mt-3 space-y-1">
+          <div className="mt-3 space-y-10">
             <DashboardNav items={navItems} />
+            <Button onClick={handleLogout}>Logout</Button>
           </div>
         </div>
       </div>

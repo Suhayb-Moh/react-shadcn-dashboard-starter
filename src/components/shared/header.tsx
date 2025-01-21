@@ -1,15 +1,16 @@
 import { navItems } from '@/constants/data';
 import { usePathname } from '@/routes/hooks';
-import Heading from './heading';
-import UserNav from './user-nav';
+import { Separator } from '../ui/separator';
+import { SidebarTrigger } from '../ui/sidebar';
 import { ModeToggle } from './theme-toggle';
+import UserNav from './user-nav';
 
 // Custom hook to find the matched path
 const useMatchedPath = (pathname: string) => {
   const matchedPath =
-    navItems.find((item) => item.href === pathname) ||
+    navItems.find((item) => item.url === pathname) ||
     navItems.find(
-      (item) => pathname.startsWith(item.href + '/') && item.href !== '/'
+      (item) => pathname.startsWith(item.url + '/') && item.url !== '/'
     );
   return matchedPath?.title || '';
 };
@@ -19,12 +20,18 @@ export default function Header() {
   const headingText = useMatchedPath(pathname);
 
   return (
-    <div className="flex flex-1 items-center justify-between bg-secondary px-4">
-      <Heading title={headingText} />
-      <div className="ml-4 flex items-center md:ml-6">
+    <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      <div className="flex items-center gap-2 px-4">
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="mr-2 h-4" />
+        {/* <Breadcrumbs /> */}
+      </div>
+
+      <div className="flex items-center gap-2 px-4">
+        <div className="hidden md:flex">{/* <SearchInput /> */}</div>
         <UserNav />
         <ModeToggle />
       </div>
-    </div>
+    </header>
   );
 }

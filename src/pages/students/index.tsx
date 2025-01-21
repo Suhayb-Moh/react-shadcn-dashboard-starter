@@ -4,6 +4,7 @@ import StudentsTable from './components/students-table';
 import { useSearchParams } from 'react-router-dom';
 import { DataTableSkeleton } from '@/components/shared/data-table-skeleton';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
+import PageContainer from '@/components/shared/page-container';
 
 export default function StudentPage() {
   const [searchParams] = useSearchParams();
@@ -29,20 +30,18 @@ export default function StudentPage() {
   }
 
   return (
-    <div className="p-4 md:p-8">
+    <>
       <PageHead title="Student Management | App" />
-      <Breadcrumbs
-        items={[
-          { title: 'Dashboard', link: '/' },
-          { title: 'Students', link: '/students' }
-        ]}
-      />
-      <StudentsTable
-        users={users}
-        page={page}
-        totalUsers={totalUsers}
-        pageCount={pageCount}
-      />
-    </div>
+      <PageContainer scrollable={false}>
+        <div className="flex flex-1 flex-col">
+          <StudentsTable
+            users={users}
+            page={page}
+            totalUsers={totalUsers}
+            pageCount={pageCount}
+          />
+        </div>
+      </PageContainer>
+    </>
   );
 }

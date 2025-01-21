@@ -3,21 +3,27 @@ import { NavItem } from '@/types';
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
-    href: '/',
+    url: '/',
     icon: 'dashboard',
-    label: 'Dashboard'
+    isActive: false,
+    shortcut: ['d', 'd'],
+    items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Students',
-    href: '/student',
+    title: 'Employee',
+    url: '/dashboard/employee',
     icon: 'user',
-    label: 'Student'
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
   },
   {
-    title: 'Login',
-    href: '/login',
-    icon: 'login',
-    label: 'Login'
+    title: 'Product',
+    url: '/dashboard/product',
+    icon: 'pizza',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
   }
 ];
 
