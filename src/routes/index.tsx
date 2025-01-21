@@ -2,9 +2,10 @@ import FormPage from '@/pages/form';
 import NotFound from '@/pages/not-found';
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-import ProtectedRoute from './protected-route';
 import AuthRoute from './auth-route';
+import ProtectedRoute from './protected-route';
 
+// Lazy loaded components
 const DashboardLayout = lazy(
   () => import('@/components/layout/dashboard-layout')
 );
@@ -15,37 +16,23 @@ const StudentDetailPage = lazy(
   () => import('@/pages/students/StudentDetailPage')
 );
 
-// ----------------------------------------------------------------------
-
 const dashboardRoutes = [
   {
     path: '/dashboard',
     element: (
       <ProtectedRoute>
         <DashboardLayout>
-          <Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
             <Outlet />
           </Suspense>
         </DashboardLayout>
       </ProtectedRoute>
     ),
     children: [
-      {
-        element: <DashboardPage />,
-        index: true
-      },
-      {
-        path: 'employee',
-        element: <StudentPage />
-      },
-      {
-        path: 'student/details',
-        element: <StudentDetailPage />
-      },
-      {
-        path: 'form',
-        element: <FormPage />
-      }
+      { element: <DashboardPage />, index: true },
+      { path: 'employee', element: <StudentPage /> },
+      { path: 'student/details', element: <StudentDetailPage /> },
+      { path: 'form', element: <FormPage /> }
     ]
   }
 ];
@@ -55,42 +42,28 @@ const authRoutes = [
     path: '/auth',
     element: (
       <AuthRoute>
-        <Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
           <Outlet />
         </Suspense>
       </AuthRoute>
     ),
     children: [
-      {
-        path: '',
-        element: <Navigate to="login" replace />,
-        index: true
-      },
-      {
-        path: 'login',
-        element: <SignInPage />
-      },
-      {
-        path: 'signup',
-        element: <StudentPage />
-      }
+      { path: '', element: <Navigate to="/auth/login" replace />, index: true },
+      { path: 'login', element: <SignInPage /> },
+      { path: 'signup', element: <StudentPage /> }
     ]
   }
 ];
 
 const publicRoutes = [
-  {
-    path: '/404',
-    element: <NotFound />
-  },
-  {
-    path: '*',
-    element: <Navigate to="/404" replace />
-  }
+  { path: '/', element: <Navigate to="/auth/login" replace /> },
+  { path: '/404', element: <NotFound /> },
+  { path: '*', element: <Navigate to="/404" replace /> }
 ];
 
+// Combine all routes
 export const routes = createBrowserRouter([
-  ...dashboardRoutes,
+  ...publicRoutes,
   ...authRoutes,
-  ...publicRoutes
+  ...dashboardRoutes
 ]);
