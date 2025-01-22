@@ -14,6 +14,12 @@ export const navItems: NavItem[] = [
     label: 'Student'
   },
   {
+    title: 'Clients',
+    href: '/client',
+    icon: 'user',
+    label: 'Client'
+  },
+  {
     title: 'Login',
     href: '/login',
     icon: 'login',
@@ -148,4 +154,15 @@ export type Employee = {
   latitude?: number; // Optional field
   job: string;
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
+};
+
+export type Client = {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  company: string;
+  notes: string;
+  tags: string[];
 };

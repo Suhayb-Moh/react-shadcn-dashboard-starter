@@ -2,6 +2,7 @@ import FormPage from '@/pages/form';
 import NotFound from '@/pages/not-found';
 import { Suspense, lazy } from 'react';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
+import PrivateRoute from '@/components/private/PrivateRoute';
 
 const DashboardLayout = lazy(
   () => import('@/components/layout/dashboard-layout')
@@ -12,6 +13,7 @@ const StudentPage = lazy(() => import('@/pages/students'));
 const StudentDetailPage = lazy(
   () => import('@/pages/students/StudentDetailPage')
 );
+const ClientPage = lazy(() => import('@/pages/clients'));
 
 // ----------------------------------------------------------------------
 
@@ -20,11 +22,13 @@ export default function AppRouter() {
     {
       path: '/',
       element: (
-        <DashboardLayout>
-          <Suspense>
-            <Outlet />
-          </Suspense>
-        </DashboardLayout>
+        <PrivateRoute>
+          <DashboardLayout>
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </DashboardLayout>
+        </PrivateRoute>
       ),
       children: [
         {
@@ -42,6 +46,10 @@ export default function AppRouter() {
         {
           path: 'form',
           element: <FormPage />
+        },
+        {
+          path: 'client',
+          element: <ClientPage />
         }
       ]
     }
@@ -62,8 +70,6 @@ export default function AppRouter() {
       element: <Navigate to="/404" replace />
     }
   ];
-
   const routes = useRoutes([...dashboardRoutes, ...publicRoutes]);
-
   return routes;
 }
